@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1078388141934",
+    "project_id": "uas-pbb-e959f",
+    "storage_bucket": "uas-pbb-e959f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078388141934:android:fcf92fb94611c86b0c1b7f",
+        "android_client_info": {
+          "package_name": "com.example.flutter_uas_ecommers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCckPqAP5RzXwo5VE20kNcT-L9NupDXohE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

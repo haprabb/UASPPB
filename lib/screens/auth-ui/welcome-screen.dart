@@ -56,8 +56,8 @@ class WelcomeScreen extends StatelessWidget {
                 child: TextButton.icon(
                   icon: Image.asset(
                     'assets/images/googleLogo.png',
-                    width: Get.width / 20,
-                    height: Get.height / 20,
+                    width: Get.width / 15,
+                    height: Get.height / 15,
                   ),
                   label: Text(
                     "Sign In with Google",
