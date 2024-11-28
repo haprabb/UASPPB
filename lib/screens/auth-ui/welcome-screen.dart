@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_uas_ecommers/screens/auth-ui/sign-in-screen.dart';
 import 'package:get/get.dart';
 import '../../utils/app-constant.dart';
 
@@ -60,11 +61,13 @@ class WelcomeScreen extends StatelessWidget {
                     height: Get.height / 15,
                   ),
                   label: Text(
-                    "Sign In with Google",
+                    "Sign In with Email",
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.off(() => SignInScreen());
+                  },
                 ),
               ),
             ),
@@ -85,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                   label: Text(
-                    "Login as a Guess",
+                    "Login as Guess",
                     style: TextStyle(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
