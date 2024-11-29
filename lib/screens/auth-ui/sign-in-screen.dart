@@ -8,7 +8,6 @@ import 'package:flutter_uas_ecommers/controllers/sign-in-controller.dart';
 import 'package:flutter_uas_ecommers/screens/admin-panel/admin-main-screen.dart';
 import 'package:flutter_uas_ecommers/screens/auth-ui/forget-password-screen.dart';
 import 'package:flutter_uas_ecommers/screens/auth-ui/sign-up-screen.dart';
-import 'package:flutter_uas_ecommers/screens/auth-ui/welcome-screen.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/main-screen.dart';
 import 'package:get/get.dart';
 

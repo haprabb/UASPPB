@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, unused_field, unused_local_variable
+// ignore_for_file: file_names, unused_field, unused_local_variable, unnecessary_null_comparison
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_uas_ecommers/controllers/get-device-token-controller.dart';

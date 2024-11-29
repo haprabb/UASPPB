@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:flutter_uas_ecommers/screens/auth-ui/sign-up-screen.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/forget-password-controller.dart';
