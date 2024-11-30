@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_uas_ecommers/models/categories-model.dart';
 import 'package:flutter_uas_ecommers/models/product-model.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
@@ -40,7 +39,7 @@ class FlashSaleWidget extends StatelessWidget {
         }
         if (snapshot.data != null) {
           return Container(
-            height: Get.height / 4.5,
+            height: Get.height / 4,
             child: ListView.builder(
               itemCount: snapshot.data!.docs.length,
               shrinkWrap: true,
@@ -74,7 +73,7 @@ class FlashSaleWidget extends StatelessWidget {
                         child: FillImageCard(
                           borderRadius: 20.0,
                           width: Get.width / 3.5,
-                          heightImage: Get.height / 12,
+                          heightImage: Get.height / 10,
                           imageProvider: CachedNetworkImageProvider(
                             productModel.productImages[0],
                           ),
@@ -88,7 +87,7 @@ class FlashSaleWidget extends StatelessWidget {
                           footer: Row(
                             children: [
                               Text(
-                                "Idr ${productModel.salePrice}",
+                                "Rp ${productModel.salePrice}",
                                 style: TextStyle(fontSize: 10.0),
                               ),
                               SizedBox(
@@ -97,9 +96,10 @@ class FlashSaleWidget extends StatelessWidget {
                               Text(
                                 " ${productModel.fullPrice}",
                                 style: TextStyle(
-                                    fontSize: 10.0,
-                                    color: Colors.yellow,
-                                    decoration: TextDecoration.lineThrough),
+                                  fontSize: 10.0,
+                                  color: const Color.fromARGB(255, 255, 0, 0),
+                                  decoration: TextDecoration.lineThrough,
+                                ),
                               ),
                             ],
                           ),

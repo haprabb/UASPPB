@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-
 import 'package:flutter/material.dart';
 
 class HeadingWidget extends StatelessWidget {
@@ -49,7 +48,9 @@ class HeadingWidget extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(color: Colors.pink, width: 1.5),
+                  border: Border.all(
+                      color: const Color.fromARGB(255, 255, 162, 193),
+                      width: 1.5),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -58,7 +59,7 @@ class HeadingWidget extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 12.0,
-                        color: Colors.blue),
+                        color: const Color.fromARGB(255, 255, 162, 193)),
                   ),
                 ),
               ),

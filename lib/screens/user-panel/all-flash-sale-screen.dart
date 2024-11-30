@@ -1,30 +1,35 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: file_names, prefer_const_constructors, unused_local_variable
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_uas_ecommers/screens/user-panel/single-category-product.dart';
+import 'package:flutter_uas_ecommers/models/product-model.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
-import '../../models/categories-model.dart';
-
-class AllCategoriesScreen extends StatefulWidget {
-  const AllCategoriesScreen({super.key});
+class AllFlashSaleScreen extends StatefulWidget {
+  const AllFlashSaleScreen({super.key});
 
   @override
-  State<AllCategoriesScreen> createState() => _AllCategoriesScreenState();
+  State<AllFlashSaleScreen> createState() => _AllFlashSaleScreenState();
 }
 
-class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
+class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(backgroundColor: Colors.pink, title: Text("All Categories")),
+      appBar: AppBar(
+          backgroundColor: Colors.pink,
+          title: Text("All Flash Sale Products!")),
       body: FutureBuilder(
-        future: FirebaseFirestore.instance.collection('categories').get(),
+        future: FirebaseFirestore.instance
+            .collection('products')
+            .where(
+              'isSale',
+              isEqualTo: true,
+            )
+            .get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -41,7 +46,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
           }
           if (snapshot.data!.docs.isEmpty) {
             return Center(
-              child: Text("No category found"),
+              child: Text("No Products found"),
             );
           }
           if (snapshot.data != null) {
@@ -54,19 +59,34 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 3,
                   childAspectRatio: 1.19),
-              itemBuilder: (context, Index) {
-                CategoriesModel categoriesModel = CategoriesModel(
-                  categoryId: snapshot.data!.docs[Index]['categoryId'],
-                  categoryImg: snapshot.data!.docs[Index]['categoryImg'],
-                  categoryName: snapshot.data!.docs[Index]['categoryName'],
-                  createAt: snapshot.data!.docs[Index]['createAt'],
-                  updateAt: snapshot.data!.docs[Index]['updateAt'],
-                );
+              itemBuilder: (context, index) {
+                final productData = snapshot.data!.docs[index];
+
+                ProductModel productModel = ProductModel(
+                    productId: productData['productId'],
+                    categoryId: productData['categoryId'],
+                    productName: productData['productName'],
+                    salePrice: productData['salePrice'],
+                    fullPrice: productData['fullPrice'],
+                    productImages: productData['productImages'],
+                    deliveryTime: productData['deliveryTime'],
+                    isSale: productData['isSale'],
+                    productDescription: productData['productDescription'],
+                    createAt: productData['createAt'],
+                    updateAt: productData['updateAt']);
+
+                // CategoriesModel categoriesModel = CategoriesModel(
+                //   categoryId: snapshot.data!.docs[Index]['categoryId'],
+                //   categoryImg: snapshot.data!.docs[Index]['categoryImg'],
+                //   categoryName: snapshot.data!.docs[Index]['categoryName'],
+                //   createAt: snapshot.data!.docs[Index]['createAt'],
+                //   updateAt: snapshot.data!.docs[Index]['updateAt'],
+                // );
                 return Row(
                   children: [
                     GestureDetector(
-                      onTap: () => Get.to(() => AllSingleCategoryProductScreen(
-                          categoryId: categoriesModel.categoryId)),
+                      // onTap: () => Get.to(() => AllSingleCategoryProductScreen(
+                      //     categoryId: categoriesModel.categoryId)),
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Container(
@@ -75,11 +95,13 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                             width: Get.width / 2.3,
                             heightImage: Get.height / 10,
                             imageProvider: CachedNetworkImageProvider(
-                              categoriesModel.categoryImg,
+                              productModel.productImages[0],
                             ),
                             title: Center(
                               child: Text(
-                                categoriesModel.categoryName,
+                                productModel.productName,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                                 style: TextStyle(fontSize: 12.0),
                               ),
                             ),
