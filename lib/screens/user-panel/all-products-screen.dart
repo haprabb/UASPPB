@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, sized_box_for_whitespace, file_names
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/models/product-model.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/product-detail-screen.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
@@ -61,6 +62,7 @@ class AllProductsScreen extends StatelessWidget {
                 ProductModel productModel = ProductModel(
                     productId: productData['productId'],
                     categoryId: productData['categoryId'],
+                    categoryName: productData['categoryName'],
                     productName: productData['productName'],
                     salePrice: productData['salePrice'],
                     fullPrice: productData['fullPrice'],
@@ -81,8 +83,8 @@ class AllProductsScreen extends StatelessWidget {
                 return Row(
                   children: [
                     GestureDetector(
-                      // onTap: () => Get.to(() => AllSingleCategoryProductScreen(
-                      //     categoryId: categoriesModel.categoryId)),
+                      onTap: () => Get.to(() =>
+                          ProductDetialScreen(productModel: productModel)),
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Container(

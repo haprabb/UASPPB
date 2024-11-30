@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_types_as_parameter_names, avoid_unnecessary_containers
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,7 +33,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              height: Get.height / 5,
+              height: Get.height / 2,
               child: Center(
                 child: CupertinoActivityIndicator(),
               ),
@@ -53,7 +53,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 3,
-                  childAspectRatio: 1.19),
+                  childAspectRatio: 1),
               itemBuilder: (context, Index) {
                 CategoriesModel categoriesModel = CategoriesModel(
                   categoryId: snapshot.data!.docs[Index]['categoryId'],
@@ -68,12 +68,12 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                       onTap: () => Get.to(() => AllSingleCategoryProductScreen(
                           categoryId: categoriesModel.categoryId)),
                       child: Padding(
-                        padding: EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.5),
                         child: Container(
                           child: FillImageCard(
                             borderRadius: 20.0,
                             width: Get.width / 2.3,
-                            heightImage: Get.height / 10,
+                            heightImage: Get.height / 7,
                             imageProvider: CachedNetworkImageProvider(
                               categoriesModel.categoryImg,
                             ),

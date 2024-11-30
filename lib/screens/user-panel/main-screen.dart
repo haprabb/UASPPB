@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/all-categories-screen.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/all-flash-sale-screen.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/all-products-screen.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/cart-screen.dart';
 import 'package:flutter_uas_ecommers/utils/app-constant.dart';
 import 'package:flutter_uas_ecommers/widgets/all-products-widget.dart';
 import 'package:flutter_uas_ecommers/widgets/banners-widget.dart';
@@ -31,6 +32,15 @@ class MainScreen extends StatelessWidget {
           style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
         ),
         centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.shopping_cart_checkout_outlined),
+            ),
+          )
+        ],
       ),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(

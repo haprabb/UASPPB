@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/models/product-model.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/product-detail-screen.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
@@ -50,6 +51,7 @@ class FlashSaleWidget extends StatelessWidget {
                     productId: productData['productId'],
                     categoryId: productData['categoryId'],
                     productName: productData['productName'],
+                    categoryName: productData['categoryName'],
                     salePrice: productData['salePrice'],
                     fullPrice: productData['fullPrice'],
                     productImages: productData['productImages'],
@@ -67,41 +69,45 @@ class FlashSaleWidget extends StatelessWidget {
                 // );
                 return Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(5.0),
-                      child: Container(
-                        child: FillImageCard(
-                          borderRadius: 20.0,
-                          width: Get.width / 3.5,
-                          heightImage: Get.height / 10,
-                          imageProvider: CachedNetworkImageProvider(
-                            productModel.productImages[0],
-                          ),
-                          title: Center(
-                            child: Text(
-                              productModel.productName,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 12.0),
+                    GestureDetector(
+                      onTap: () => Get.to(() =>
+                          ProductDetialScreen(productModel: productModel)),
+                      child: Padding(
+                        padding: EdgeInsets.all(5.0),
+                        child: Container(
+                          child: FillImageCard(
+                            borderRadius: 20.0,
+                            width: Get.width / 3.5,
+                            heightImage: Get.height / 10,
+                            imageProvider: CachedNetworkImageProvider(
+                              productModel.productImages[0],
                             ),
-                          ),
-                          footer: Row(
-                            children: [
-                              Text(
-                                "Rp ${productModel.salePrice}",
-                                style: TextStyle(fontSize: 10.0),
+                            title: Center(
+                              child: Text(
+                                productModel.productName,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 12.0),
                               ),
-                              SizedBox(
-                                width: 2.0,
-                              ),
-                              Text(
-                                " ${productModel.fullPrice}",
-                                style: TextStyle(
-                                  fontSize: 10.0,
-                                  color: const Color.fromARGB(255, 255, 0, 0),
-                                  decoration: TextDecoration.lineThrough,
+                            ),
+                            footer: Row(
+                              children: [
+                                Text(
+                                  "Rp ${productModel.salePrice}",
+                                  style: TextStyle(fontSize: 10.0),
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 2.0,
+                                ),
+                                Text(
+                                  " ${productModel.fullPrice}",
+                                  style: TextStyle(
+                                    fontSize: 10.0,
+                                    color: const Color.fromARGB(255, 255, 0, 0),
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

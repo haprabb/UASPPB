@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/models/product-model.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/product-detail-screen.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
@@ -56,13 +57,14 @@ class _AllSingleCategoryProductScreenState
                   crossAxisCount: 2,
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 3,
-                  childAspectRatio: 1.19),
+                  childAspectRatio: 0.9),
               itemBuilder: (context, Index) {
                 final productData = snapshot.data!.docs[Index];
                 ProductModel productModel = ProductModel(
                   productId: productData['productId'],
                   categoryId: productData['categoryId'],
                   productName: productData['productName'],
+                  categoryName: productData['categoryName'],
                   salePrice: productData['salePrice'],
                   fullPrice: productData['fullPrice'],
                   productImages: productData['productImages'],
@@ -81,21 +83,25 @@ class _AllSingleCategoryProductScreenState
                 // );
                 return Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Container(
-                        child: FillImageCard(
-                          borderRadius: 20.0,
-                          width: Get.width / 2.3,
-                          heightImage: Get.height / 10,
-                          imageProvider: CachedNetworkImageProvider(
-                            productModel.productImages[0],
-                          ),
-                          title: Center(
-                            child: Text(
-                              productModel.productName,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 12.0),
+                    GestureDetector(
+                      onTap: () => Get.to(() =>
+                          ProductDetialScreen(productModel: productModel)),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                          child: FillImageCard(
+                            borderRadius: 20.0,
+                            width: Get.width / 2.3,
+                            heightImage: Get.height / 6,
+                            imageProvider: CachedNetworkImageProvider(
+                              productModel.productImages[0],
+                            ),
+                            title: Center(
+                              child: Text(
+                                productModel.productName,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 12.0),
+                              ),
                             ),
                           ),
                         ),

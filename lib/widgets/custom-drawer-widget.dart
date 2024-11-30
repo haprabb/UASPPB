@@ -30,7 +30,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           children: [
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
               child: ListTile(
                 titleAlignment: ListTileTitleAlignment.center,
                 title: Text(
@@ -52,7 +52,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               color: Colors.grey,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListTile(
                 titleAlignment: ListTileTitleAlignment.center,
                 title: Text("Home"),
@@ -61,7 +61,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListTile(
                 titleAlignment: ListTileTitleAlignment.center,
                 title: Text("Products"),
@@ -70,7 +70,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListTile(
                 titleAlignment: ListTileTitleAlignment.center,
                 title: Text("Order"),
@@ -79,7 +79,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListTile(
                 titleAlignment: ListTileTitleAlignment.center,
                 title: Text("Contact"),
@@ -88,7 +88,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListTile(
                 onTap: () async {
                   FirebaseAuth _auth = FirebaseAuth.instance;

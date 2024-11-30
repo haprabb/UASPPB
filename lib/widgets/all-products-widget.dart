@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/models/product-model.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/product-detail-screen.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 
@@ -54,6 +55,7 @@ class AllProductsWidget extends StatelessWidget {
                   productId: productData['productId'],
                   categoryId: productData['categoryId'],
                   productName: productData['productName'],
+                  categoryName: productData['categoryName'],
                   salePrice: productData['salePrice'],
                   fullPrice: productData['fullPrice'],
                   productImages: productData['productImages'],
@@ -73,8 +75,9 @@ class AllProductsWidget extends StatelessWidget {
               return Row(
                 children: [
                   GestureDetector(
-                    // onTap: () => Get.to(() => AllSingleCategoryProductScreen(
-                    //     categoryId: categoriesModel.categoryId)),
+                    onTap: () => Get.to(() => ProductDetialScreen(
+                          productModel: productModel,
+                        )),
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Container(
