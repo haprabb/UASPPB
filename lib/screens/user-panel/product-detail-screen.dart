@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, unused_local_variable, avoid_print, must_be_immutable
+// ignore_for_file: file_names, prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, unused_local_variable, avoid_print, must_be_immutable, unnecessary_null_comparison
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -43,7 +43,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                       child: CachedNetworkImage(
                         imageUrl: imageUrls,
                         fit: BoxFit.cover,
-                        width: Get.width - 10,
+                        width: Get.width / 1.5,
                         placeholder: (context, url) => ColoredBox(
                           color: Colors.white,
                           child: Center(
@@ -57,8 +57,8 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                   .toList(),
               options: CarouselOptions(
                 scrollDirection: Axis.horizontal,
-                autoPlay: true,
-                aspectRatio: 2.5,
+                autoPlay: false,
+                aspectRatio: 1.5,
                 viewportFraction: 1,
               ),
             ),
@@ -89,16 +89,17 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
+                        color: const Color.fromARGB(255, 225, 132, 163),
                         alignment: Alignment.topLeft,
                         child: Row(
                           children: [
                             widget.productModel.isSale == true &&
                                     widget.productModel.salePrice != ''
                                 ? Text(
-                                    "Rp" + widget.productModel.salePrice,
+                                    "\$" + widget.productModel.salePrice,
                                   )
                                 : Text(
-                                    "Rp" + widget.productModel.fullPrice,
+                                    "\$" + widget.productModel.fullPrice,
                                   ),
                           ],
                         ),
@@ -107,7 +108,11 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.pink,
+                            borderRadius: BorderRadius.circular(6.0)),
                         alignment: Alignment.topLeft,
+                        height: Get.height / 5,
                         child: Text(
                           widget.productModel.productDescription,
                         ),
@@ -121,7 +126,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                           Material(
                             child: Container(
                               width: Get.width / 3.0,
-                              height: Get.height / 16,
+                              height: Get.height / 12,
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 16, 34, 227),
                                 borderRadius: BorderRadius.circular(20.0),
@@ -145,7 +150,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                           Material(
                             child: Container(
                               width: Get.width / 3.0,
-                              height: Get.height / 16,
+                              height: Get.height / 12,
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 16, 34, 227),
                                 borderRadius: BorderRadius.circular(20.0),
@@ -181,7 +186,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
     final DocumentReference documentReference = FirebaseFirestore.instance
         .collection('cart')
         .doc(uId)
-        .collection('cartOrders')
+        .collection('cartOrder')
         .doc(widget.productModel.productId.toString());
 
     DocumentSnapshot snapshot = await documentReference.get();
@@ -199,12 +204,12 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
         'productTotalPrice': totalPrice
       });
 
-      print("product exists");
+      print("Product Exist");
     } else {
       await FirebaseFirestore.instance.collection('cart').doc(uId).set(
         {
           'uId': uId,
-          'createdAt': DateTime.now(),
+          'createAt': DateTime.now(),
         },
       );
       CartModel cartModel = CartModel(
@@ -223,12 +228,12 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
         productQuantity: 1,
         productTotalPrice: double.parse(widget.productModel.isSale
             ? widget.productModel.salePrice
-            : widget.productModel.fullPrice),
+            : widget.productModel.salePrice),
       );
 
       await documentReference.set(cartModel.toMap());
 
-      print("product added");
+      print("Product Added");
     }
   }
 }

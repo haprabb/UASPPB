@@ -37,7 +37,7 @@ class _AllSingleCategoryProductScreenState
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              height: Get.height / 5,
+              height: Get.height / 4,
               child: Center(
                 child: CupertinoActivityIndicator(),
               ),
@@ -57,7 +57,7 @@ class _AllSingleCategoryProductScreenState
                   crossAxisCount: 2,
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 3,
-                  childAspectRatio: 0.9),
+                  childAspectRatio: 0.7),
               itemBuilder: (context, Index) {
                 final productData = snapshot.data!.docs[Index];
                 ProductModel productModel = ProductModel(
@@ -92,7 +92,7 @@ class _AllSingleCategoryProductScreenState
                           child: FillImageCard(
                             borderRadius: 20.0,
                             width: Get.width / 2.3,
-                            heightImage: Get.height / 6,
+                            heightImage: Get.height / 4.2,
                             imageProvider: CachedNetworkImageProvider(
                               productModel.productImages[0],
                             ),
@@ -100,6 +100,7 @@ class _AllSingleCategoryProductScreenState
                               child: Text(
                                 productModel.productName,
                                 overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
                                 style: TextStyle(fontSize: 12.0),
                               ),
                             ),

@@ -128,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   width: Get.width / 2,
                   height: Get.height / 18,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 16, 34, 227),
+                    color: const Color.fromARGB(255, 255, 19, 145),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: TextButton(

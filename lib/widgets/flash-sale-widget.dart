@@ -27,7 +27,7 @@ class FlashSaleWidget extends StatelessWidget {
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
-            height: Get.height / 5,
+            height: Get.height / 6,
             child: Center(
               child: CupertinoActivityIndicator(),
             ),
@@ -40,7 +40,7 @@ class FlashSaleWidget extends StatelessWidget {
         }
         if (snapshot.data != null) {
           return Container(
-            height: Get.height / 4,
+            height: Get.height / 3.2,
             child: ListView.builder(
               itemCount: snapshot.data!.docs.length,
               shrinkWrap: true,
@@ -77,8 +77,8 @@ class FlashSaleWidget extends StatelessWidget {
                         child: Container(
                           child: FillImageCard(
                             borderRadius: 20.0,
-                            width: Get.width / 3.5,
-                            heightImage: Get.height / 10,
+                            width: Get.width / 3.0,
+                            heightImage: Get.height / 5,
                             imageProvider: CachedNetworkImageProvider(
                               productModel.productImages[0],
                             ),
@@ -92,14 +92,14 @@ class FlashSaleWidget extends StatelessWidget {
                             footer: Row(
                               children: [
                                 Text(
-                                  "Rp ${productModel.salePrice}",
+                                  "\$ ${productModel.salePrice}",
                                   style: TextStyle(fontSize: 10.0),
                                 ),
                                 SizedBox(
-                                  width: 2.0,
+                                  width: 1.5,
                                 ),
                                 Text(
-                                  " ${productModel.fullPrice}",
+                                  "\$ ${productModel.fullPrice}",
                                   style: TextStyle(
                                     fontSize: 10.0,
                                     color: const Color.fromARGB(255, 255, 0, 0),

@@ -37,7 +37,7 @@ class MainScreen extends StatelessWidget {
             onTap: () => Get.to(() => CartScreen()),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.shopping_cart_checkout_outlined),
+              child: Icon(Icons.shopping_bag_outlined),
             ),
           )
         ],

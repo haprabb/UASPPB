@@ -56,7 +56,7 @@ class CartModel {
         productId: json['productId'],
         categoryId: json['categoryId'],
         productName: json['productName'],
-        categoryName: json['caregoryName'],
+        categoryName: json['categoryName'],
         salePrice: json['salePrice'],
         fullPrice: json['fullPrice'],
         productImages: json['productImages'],

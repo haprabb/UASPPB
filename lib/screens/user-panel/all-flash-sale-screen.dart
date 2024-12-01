@@ -39,7 +39,7 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              height: Get.height / 5,
+              height: Get.height / 4,
               child: Center(
                 child: CupertinoActivityIndicator(),
               ),
@@ -59,7 +59,7 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 3,
-                  childAspectRatio: 0.9),
+                  childAspectRatio: 0.8),
               itemBuilder: (context, index) {
                 final productData = snapshot.data!.docs[index];
 
@@ -96,7 +96,7 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                           child: FillImageCard(
                             borderRadius: 20.0,
                             width: Get.width / 2.3,
-                            heightImage: Get.height / 6,
+                            heightImage: Get.height / 4.2,
                             imageProvider: CachedNetworkImageProvider(
                               productModel.productImages[0],
                             ),
@@ -105,7 +105,10 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                                 productModel.productName,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: TextStyle(fontSize: 12.0),
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),

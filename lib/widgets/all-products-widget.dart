@@ -84,7 +84,7 @@ class AllProductsWidget extends StatelessWidget {
                         child: FillImageCard(
                           borderRadius: 20.0,
                           width: Get.width / 2.3,
-                          heightImage: Get.height / 6,
+                          heightImage: Get.height / 4.4,
                           imageProvider: CachedNetworkImageProvider(
                             productModel.productImages[0],
                           ),
@@ -97,7 +97,7 @@ class AllProductsWidget extends StatelessWidget {
                             ),
                           ),
                           footer: Center(
-                              child: Text("Rp. " + productModel.fullPrice)),
+                              child: Text('\$' + productModel.fullPrice)),
                         ),
                       ),
                     ),
