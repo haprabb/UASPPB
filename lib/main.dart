@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_uas_ecommers/screens/auth-ui/sign-in-new.dart';
 import 'package:flutter_uas_ecommers/screens/auth-ui/sign-in-screen.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/main-screen.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      home: const SignInScreen(),
     );
   }
 }

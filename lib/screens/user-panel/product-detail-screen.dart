@@ -10,6 +10,7 @@ import 'package:flutter_uas_ecommers/models/product-model.dart';
 import 'package:get/get.dart';
 
 import '../../models/cart-model.dart';
+import 'cart-screen.dart';
 
 class ProductDetialScreen extends StatefulWidget {
   ProductModel productModel;
@@ -25,8 +26,21 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.pink,
-        title: Text("Product Detail"),
+        title: Text(
+          "Product Detail",
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.shopping_bag_outlined),
+            ),
+          )
+        ],
       ),
       body: Container(
         child: Column(

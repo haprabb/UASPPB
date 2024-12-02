@@ -43,7 +43,7 @@ class CartModel {
       'productImages': productImages,
       'deliveryTime': deliveryTime,
       'isSale': isSale,
-      'prodcutDescription': productDescription,
+      'productDescription': productDescription,
       'createAt': createAt,
       'updateAt': updateAt,
       'productQuantity': productQuantity,
