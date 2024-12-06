@@ -139,7 +139,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                         children: [
                           Material(
                             child: Container(
-                              width: Get.width / 3.0,
+                              width: Get.width / 1.5,
                               height: Get.height / 12,
                               decoration: BoxDecoration(
                                 color: const Color.fromARGB(255, 16, 34, 227),
@@ -150,7 +150,8 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                                   "Add to cart",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
                                 ),
                                 onPressed: () async {
                                   await checkProductExistence(uId: user!.uid);
@@ -160,25 +161,6 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                           ),
                           SizedBox(
                             width: 5.0,
-                          ),
-                          Material(
-                            child: Container(
-                              width: Get.width / 3.0,
-                              height: Get.height / 12,
-                              decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 16, 34, 227),
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: TextButton(
-                                child: Text(
-                                  "Buy Now",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {},
-                              ),
-                            ),
                           ),
                         ],
                       ),

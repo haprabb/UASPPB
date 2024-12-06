@@ -1,6 +1,5 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:flutter_uas_ecommers/models/cart-model.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/checkout-screen.dart';
 import 'package:get/get.dart';
-import 'package:image_card/image_card.dart';
 
 import '../../controllers/cart-price-controller.dart';
 

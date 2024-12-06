@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison, file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,6 @@ import 'package:get/get.dart';
 class ProducPriceController extends GetxController {
   RxDouble totalPrice = 0.0.obs;
   User? user = FirebaseAuth.instance.currentUser;
-  
 
   @override
   void onInit() {

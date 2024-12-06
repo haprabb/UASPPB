@@ -11,8 +11,8 @@ class OrderModel {
   final String deliveryTime;
   final bool isSale;
   final String productDescription;
-  final dynamic createdAt;
-  final dynamic updatedAt;
+  final dynamic createAt;
+  final dynamic updateAt;
   final int productQuantity;
   final double productTotalPrice;
   final String customerId;
@@ -33,8 +33,8 @@ class OrderModel {
     required this.deliveryTime,
     required this.isSale,
     required this.productDescription,
-    required this.createdAt,
-    required this.updatedAt,
+    required this.createAt,
+    required this.updateAt,
     required this.productQuantity,
     required this.productTotalPrice,
     required this.customerId,
@@ -57,8 +57,8 @@ class OrderModel {
       'deliveryTime': deliveryTime,
       'isSale': isSale,
       'productDescription': productDescription,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'createAt': createAt,
+      'updateAt': updateAt,
       'productQuantity': productQuantity,
       'productTotalPrice': productTotalPrice,
       'customerId': customerId,
@@ -82,8 +82,8 @@ class OrderModel {
       deliveryTime: json['deliveryTime'],
       isSale: json['isSale'],
       productDescription: json['productDescription'],
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
+      createAt: json['createAt'],
+      updateAt: json['updateAt'],
       productQuantity: json['productQuantity'],
       productTotalPrice: json['productTotalPrice'],
       customerId: json['customerId'],
