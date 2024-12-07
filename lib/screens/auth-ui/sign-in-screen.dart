@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, unnecessary_null_comparison, prefer_const_literals_to_create_immutables, unused_import
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,26 +27,17 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController userPassword = TextEditingController();
 
   @override
+  @override
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(
       builder: (context, isKeyboardVisible) {
         return Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.white, // Background putih
           body: Stack(
             children: [
-              // Background Gradient
+              // Background Putih
               Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 255, 255, 255), // Top blue
-                      Color.fromARGB(255, 255, 255, 255), // Middle light blue
-                      Color.fromARGB(255, 255, 255, 255), // Bottom sky blue
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
+                color: Colors.white,
               ),
               Align(
                 alignment: Alignment.center,
@@ -56,45 +47,38 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Logo
+                        // Logo dan Welcome Text
                         if (!isKeyboardVisible)
                           Column(
                             children: [
-                              Image.asset(
-                                'assets/images/logoRnr.png',
-                                width: Get.width / 3,
-                                height: Get.height / 6,
-                              ),
-                              SizedBox(height: 20.0),
+                              SizedBox(
+                                  height: 40.0), // Memindahkan elemen ke atas
                               Text(
-                                "Welcome Back!",
+                                "WELCOME!",
                                 style: TextStyle(
-                                  color: Color.fromARGB(255, 255, 61, 200),
-                                  fontSize: 24.0,
+                                  color: Colors.black,
+                                  fontSize: 34.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
+                              SizedBox(height: 20.0),
+                              Image.asset(
+                                'assets/images/logo.png',
+                                width: Get.width / 3,
+                                height: Get.height / 6,
+                              ),
                             ],
                           ),
-                        SizedBox(height: 30.0),
-                        // Card for Input Fields
+                        SizedBox(height: 80.0),
+                        // Card untuk Input Fields
                         Container(
                           padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 255, 255, 255),
-                                Color.fromARGB(255, 255, 145, 224),
-                                Color.fromARGB(255, 255, 61, 200),
-                              ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
+                            color: Color(0xFFC5DDF5), // Warna #C5DDF5
                             borderRadius: BorderRadius.circular(20.0),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color.fromARGB(255, 255, 255, 255)
-                                    .withOpacity(0.1),
+                                color: Colors.grey.withOpacity(0.1),
                                 blurRadius: 20,
                                 offset: Offset(0, 5),
                               ),
@@ -102,7 +86,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           child: Column(
                             children: [
-                              // Email Input
+                              // Input Email
                               TextFormField(
                                 controller: userEmail,
                                 cursorColor: Colors.black,
@@ -110,21 +94,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 decoration: InputDecoration(
                                   labelText: "Email",
                                   labelStyle: TextStyle(
-                                      color: const Color.fromARGB(
-                                          255, 255, 255, 255)),
-                                  prefixIcon: Icon(Icons.email,
-                                      color: const Color.fromARGB(
-                                          255, 255, 255, 255)),
+                                      color: Colors.white), // Warna teks putih
+                                  prefixIcon:
+                                      Icon(Icons.email, color: Colors.white),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                    ),
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
                                 ),
                               ),
                               SizedBox(height: 20.0),
-                              // Password Input
+                              // Input Password
                               Obx(
                                 () => TextFormField(
                                   controller: userPassword,
@@ -134,11 +113,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   decoration: InputDecoration(
                                     labelText: "Password",
                                     labelStyle: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255)),
-                                    prefixIcon: Icon(Icons.lock,
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255)),
+                                        color:
+                                            Colors.white), // Warna teks putih
+                                    prefixIcon:
+                                        Icon(Icons.lock, color: Colors.white),
                                     suffixIcon: GestureDetector(
                                       onTap: () {
                                         signInController.isPasswordVisible
@@ -148,8 +126,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         signInController.isPasswordVisible.value
                                             ? Icons.visibility_off
                                             : Icons.visibility,
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255),
+                                        color: Colors.white,
                                       ),
                                     ),
                                     border: OutlineInputBorder(
@@ -168,19 +145,18 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: Text(
                                     "Forgot Password?",
                                     style: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255),
+                                        color: Colors.white, // Warna teks putih
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
                               SizedBox(height: 20.0),
-                              // Sign In Button
+                              // Tombol Sign In
                               Material(
                                 color: Colors.transparent,
                                 child: InkWell(
                                   borderRadius: BorderRadius.circular(20.0),
-                                  splashColor: Colors.pinkAccent,
+                                  splashColor: Colors.blueAccent,
                                   onTap: () async {
                                     // Sign-in logic
                                     String email = userEmail.text.trim();
@@ -253,14 +229,15 @@ class _SignInScreenState extends State<SignInScreen> {
                                     decoration: BoxDecoration(
                                       gradient: const LinearGradient(
                                         colors: [
-                                          Color(0xFFFF4081),
-                                          Color(0xFFFF80AB),
+                                          Color(
+                                              0xFF516b8c), // Tombol SIGN IN warna #516b8c
+                                          Color(0xFF516b8c),
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(20.0),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.pinkAccent
+                                          color: Colors.blueAccent
                                               .withOpacity(0.3),
                                           blurRadius: 10,
                                           offset: Offset(0, 5),
@@ -285,16 +262,14 @@ class _SignInScreenState extends State<SignInScreen> {
                           children: [
                             Text(
                               "Don't have an Account? ",
-                              style: TextStyle(
-                                  color: Color.fromARGB(255, 255, 61, 200)),
+                              style: TextStyle(color: Color(0xFFC5DDF5)),
                             ),
                             GestureDetector(
                               onTap: () => Get.offAll(() => SignUpScreen()),
                               child: Text(
                                 "Sign Up",
                                 style: TextStyle(
-                                    color:
-                                        const Color.fromARGB(255, 142, 0, 87),
+                                    color: Color(0xFF516b8c),
                                     fontWeight: FontWeight.bold),
                               ),
                             ),

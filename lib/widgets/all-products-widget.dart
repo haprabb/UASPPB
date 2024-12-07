@@ -27,7 +27,7 @@ class AllProductsWidget extends StatelessWidget {
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
-            height: Get.height / 5,
+            height: Get.height / 9,
             child: Center(
               child: CupertinoActivityIndicator(),
             ),
@@ -47,7 +47,7 @@ class AllProductsWidget extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 5,
                 crossAxisSpacing: 5,
-                childAspectRatio: 0.8),
+                childAspectRatio: 0.65),
             itemBuilder: (context, index) {
               final productData = snapshot.data!.docs[index];
 
@@ -84,7 +84,7 @@ class AllProductsWidget extends StatelessWidget {
                         child: FillImageCard(
                           borderRadius: 20.0,
                           width: Get.width / 2.3,
-                          heightImage: Get.height / 4.4,
+                          heightImage: Get.height / 4.3,
                           imageProvider: CachedNetworkImageProvider(
                             productModel.productImages[0],
                           ),
@@ -93,11 +93,16 @@ class AllProductsWidget extends StatelessWidget {
                               productModel.productName,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: TextStyle(fontSize: 12.0),
+                              style: TextStyle(fontSize: 18.0),
                             ),
                           ),
                           footer: Center(
-                              child: Text('\$' + productModel.fullPrice)),
+                              child: Text(
+                            '\$' + productModel.fullPrice,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
                         ),
                       ),
                     ),

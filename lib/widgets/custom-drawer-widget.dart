@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/all-order-screen.dart';
 import 'package:get/get.dart';
-
 import '../screens/auth-ui/sign-in-screen.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -25,85 +25,129 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             bottomRight: Radius.circular(20.0),
           ),
         ),
-        child: Wrap(
-          runSpacing: 10,
+        child: Column(
           children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-              child: ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text(
-                  "Haprab",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+            // Header with Gradient Background
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.pink, Colors.orange],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                subtitle: Text("satya H"),
-                leading: CircleAvatar(
-                  radius: 22.0,
-                  backgroundColor: Colors.red,
-                  child: Text("H"),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(20),
                 ),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30.0,
+                    backgroundColor: Colors.white,
+                    child: Text(
+                      "H",
+                      style: TextStyle(
+                        color: Colors.pink,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Haprab",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        "satya H",
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Divider(
               indent: 10.0,
               endIndent: 10.0,
               thickness: 1.5,
-              color: Colors.grey,
+              color: Colors.grey[300],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text("Home"),
-                leading: Icon(Icons.home_filled),
-                trailing: Icon(Icons.arrow_forward),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text("Products"),
-                leading: Icon(Icons.production_quantity_limits_rounded),
-                trailing: Icon(Icons.arrow_forward),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text("Order"),
-                leading: Icon(Icons.shopping_bag_rounded),
-                trailing: Icon(Icons.arrow_forward),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text("Contact"),
-                leading: Icon(Icons.help),
-                trailing: Icon(Icons.arrow_forward),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: ListTile(
-                onTap: () async {
-                  FirebaseAuth _auth = FirebaseAuth.instance;
-                  await _auth.signOut();
-                  Get.offAll(() => SignInScreen());
-                },
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text("Logout"),
-                leading: Icon(Icons.logout_rounded),
-                trailing: Icon(Icons.arrow_forward),
+            Expanded(
+              child: ListView(
+                children: [
+                  _buildDrawerItem(
+                    title: "Home",
+                    icon: Icons.home_filled,
+                  ),
+                  _buildDrawerItem(
+                    title: "Products",
+                    icon: Icons.production_quantity_limits_rounded,
+                  ),
+                  _buildDrawerItem(
+                      title: "Order",
+                      icon: Icons.shopping_bag_rounded,
+                      onTap: () {
+                        Get.to(() => AllOrderScreen());
+                      }),
+                  _buildDrawerItem(
+                    title: "Contact",
+                    icon: Icons.help,
+                  ),
+                  _buildDrawerItem(
+                    title: "Logout",
+                    icon: Icons.logout_rounded,
+                    onTap: () async {
+                      FirebaseAuth _auth = FirebaseAuth.instance;
+                      await _auth.signOut();
+                      Get.offAll(() => SignInScreen());
+                    },
+                  ),
+                ],
               ),
             ),
           ],
         ),
         backgroundColor: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(
+      {required String title, required IconData icon, Function()? onTap}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+      child: ListTile(
+        onTap: onTap,
+        title: Text(
+          title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        leading: Icon(
+          icon,
+          color: Colors.pink,
+        ),
+        trailing: Icon(
+          Icons.arrow_forward,
+          color: Colors.grey,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        tileColor: Colors.grey[100],
+        hoverColor: Colors.pink[50],
       ),
     );
   }

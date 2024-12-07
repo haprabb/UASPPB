@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class OrderModel {
   final String productId;
   final String categoryId;
@@ -11,7 +13,7 @@ class OrderModel {
   final String deliveryTime;
   final bool isSale;
   final String productDescription;
-  final dynamic createAt;
+  final DateTime createAt;
   final dynamic updateAt;
   final int productQuantity;
   final double productTotalPrice;
@@ -57,7 +59,7 @@ class OrderModel {
       'deliveryTime': deliveryTime,
       'isSale': isSale,
       'productDescription': productDescription,
-      'createAt': createAt,
+      'createAt': Timestamp.fromDate(createAt),
       'updateAt': updateAt,
       'productQuantity': productQuantity,
       'productTotalPrice': productTotalPrice,
@@ -70,28 +72,28 @@ class OrderModel {
     };
   }
 
-  factory OrderModel.fromMap(Map<String, dynamic> json) {
+  factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
-      productId: json['productId'],
-      categoryId: json['categoryId'],
-      productName: json['productName'],
-      categoryName: json['categoryName'],
-      salePrice: json['salePrice'],
-      fullPrice: json['fullPrice'],
-      productImages: json['productImages'],
-      deliveryTime: json['deliveryTime'],
-      isSale: json['isSale'],
-      productDescription: json['productDescription'],
-      createAt: json['createAt'],
-      updateAt: json['updateAt'],
-      productQuantity: json['productQuantity'],
-      productTotalPrice: json['productTotalPrice'],
-      customerId: json['customerId'],
-      status: json['status'],
-      customerName: json['customerName'],
-      customerPhone: json['customerPhone'],
-      customerAddress: json['customerAddress'],
-      customerDeviceToken: json['customerDeviceToken'],
+      productId: map['productId'],
+      categoryId: map['categoryId'],
+      productName: map['productName'],
+      categoryName: map['categoryName'],
+      salePrice: map['salePrice'],
+      fullPrice: map['fullPrice'],
+      productImages: map['productImages'],
+      deliveryTime: map['deliveryTime'],
+      isSale: map['isSale'],
+      productDescription: map['productDescription'],
+      createAt: (map['createAt'] as Timestamp).toDate(),
+      updateAt: map['updateAt'],
+      productQuantity: map['productQuantity'],
+      productTotalPrice: map['productTotalPrice'],
+      customerId: map['customerId'],
+      status: map['status'],
+      customerName: map['customerName'],
+      customerPhone: map['customerPhone'],
+      customerAddress: map['customerAddress'],
+      customerDeviceToken: map['customerDeviceToken'],
     );
   }
 }

@@ -1,11 +1,10 @@
-// ignore_for_file: unused_local_variable, avoid_print, prefer_const_constructors
+// ignore_for_file: unused_local_variable, avoid_print, prefer_const_constructors, unnecessary_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_uas_ecommers/models/order-model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/main-screen.dart';
-import 'package:flutter_uas_ecommers/services/generate-order-id-service.dart';
 import 'package:get/get.dart';
 
 void placeOrder(
@@ -15,90 +14,72 @@ void placeOrder(
     required String customerAddress,
     required String customerDeviceToken}) async {
   final user = FirebaseAuth.instance.currentUser;
-
   if (user != null) {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      // Mulai transaksi batch
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      // Buat dokumen order utama
+      DocumentReference orderRef =
+          FirebaseFirestore.instance.collection('orders').doc();
+
+      double totalAmount = 0.0;
+      List<Map<String, dynamic>> orderItems = [];
+
+      // Ambil items dari cart
+      QuerySnapshot cartSnapshot = await FirebaseFirestore.instance
           .collection('cart')
           .doc(user.uid)
           .collection('cartOrder')
           .get();
 
-      List<QueryDocumentSnapshot> documents = querySnapshot.docs;
-
-      for (var doc in documents) {
-        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>;
-
-        String orderId = generateOrderId();
-
-        OrderModel cartModel = OrderModel(
-          productId: data['productId'],
-          categoryId: data['categoryId'],
-          categoryName: data['categoryName'],
-          productName: data['productName'],
-          salePrice: data['salePrice'],
-          fullPrice: data['fullPrice'],
-          productImages: data['productImages'],
-          deliveryTime: data['deliveryTime'],
-          isSale: data['isSale'],
-          productDescription: data['productDescription'],
-          createAt: DateTime.now(),
-          updateAt: data['updateAt'],
-          productQuantity: data['productQuantity'],
-          productTotalPrice: double.parse(data['productTotalPrice'].toString()),
-          customerId: user.uid,
-          status: false,
-          customerName: customerName,
-          customerPhone: customerPhone,
-          customerAddress: customerAddress,
-          customerDeviceToken: customerDeviceToken,
-        );
-
-        for (var x = 0; x < documents.length; x++) {
-          await FirebaseFirestore.instance
-              .collection('orders')
-              .doc(user.uid)
-              .set(
-            {
-              'uId': user.uid,
-              'customerName': customerName,
-              'customerPhone': customerPhone,
-              'customerAddress': customerAddress,
-              'customerDeviceToken': customerDeviceToken,
-              'orderStatus': false,
-              'createAt': DateTime.now(),
-            },
-          );
-
-          //upload
-          await FirebaseFirestore.instance
-              .collection('orders')
-              .doc(user.uid)
-              .collection('confirmOrders')
-              .doc(orderId)
-              .set(cartModel.toMap());
-
-          //delete
-          await FirebaseFirestore.instance
-              .collection('cart')
-              .doc(user.uid)
-              .collection('cartOrder')
-              .doc(cartModel.productId.toString())
-              .delete()
-              .then((value) {
-            print("Deleted Cart Product $cartModel.productId.toString()");
-          });
-        }
+      if (cartSnapshot.docs.isEmpty) {
+        throw "Keranjang belanja kosong";
       }
-      print("Order confirmed");
-      Get.snackbar("Order confirmed", "Thankyou, we wait for your next order!",
-          backgroundColor: Color.fromARGB(255, 255, 61, 200),
-          colorText: Color.fromARGB(255, 255, 255, 255),
-          duration: Duration(seconds: 3));
+
+      // Proses setiap item
+      for (var doc in cartSnapshot.docs) {
+        Map<String, dynamic> item = doc.data() as Map<String, dynamic>;
+        totalAmount += double.parse(item['productTotalPrice'].toString());
+        orderItems.add(item);
+
+        // Tambahkan operasi delete ke batch
+        batch.delete(doc.reference);
+      }
+
+      // Set data order utama
+      batch.set(orderRef, {
+        'orderId': orderRef.id,
+        'uId': user.uid,
+        'customerName': customerName,
+        'customerPhone': customerPhone,
+        'customerAddress': customerAddress,
+        'customerDeviceToken': customerDeviceToken,
+        'orderStatus': false,
+        'createAt': DateTime.now(),
+        'totalAmount': totalAmount,
+        'items': orderItems,
+      });
+
+      // Eksekusi batch
+      await batch.commit();
+
+      Get.snackbar(
+        "Pesanan Berhasil",
+        "Pesanan Anda sedang diproses",
+        backgroundColor: Color.fromARGB(255, 255, 61, 200),
+        colorText: Colors.white,
+      );
 
       Get.offAll(() => MainScreen());
     } catch (e) {
-      print("ERROR $e");
+      print("ERROR: $e");
+      Get.snackbar(
+        "Error",
+        "Gagal membuat pesanan: ${e.toString()}",
+        backgroundColor: Color.fromARGB(255, 255, 61, 200),
+        colorText: Colors.white,
+      );
     }
   }
 }

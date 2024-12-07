@@ -43,11 +43,13 @@ dependencies:
   google_sign_in: ^6.2.2
   firebase_auth: ^5.3.3
   cloud_firestore: ^5.5.0
-  firebase_messaging: ^15.1.5
+  firebase_messaging: ^15.1.6
   carousel_slider: ^5.0.0
   cached_network_image: ^3.4.1
   image_card: ^0.0.4
   flutter_swipe_action_cell: ^3.1.5
+
+ 
 
 dev_dependencies:
   flutter_test:

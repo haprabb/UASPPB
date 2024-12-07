@@ -86,14 +86,17 @@ class FlashSaleWidget extends StatelessWidget {
                               child: Text(
                                 productModel.productName,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 12.0),
+                                style: TextStyle(fontSize: 15.0),
                               ),
                             ),
                             footer: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   "\$ ${productModel.salePrice}",
-                                  style: TextStyle(fontSize: 10.0),
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   width: 1.5,
@@ -101,7 +104,7 @@ class FlashSaleWidget extends StatelessWidget {
                                 Text(
                                   "\$ ${productModel.fullPrice}",
                                   style: TextStyle(
-                                    fontSize: 10.0,
+                                    fontSize: 15.0,
                                     color: const Color.fromARGB(255, 255, 0, 0),
                                     decoration: TextDecoration.lineThrough,
                                   ),

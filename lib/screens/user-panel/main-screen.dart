@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, duplicate_ignore
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +12,6 @@ import 'package:flutter_uas_ecommers/widgets/banners-widget.dart';
 import 'package:flutter_uas_ecommers/widgets/categories-widget.dart';
 import 'package:flutter_uas_ecommers/widgets/custom-drawer-widget.dart';
 import 'package:flutter_uas_ecommers/widgets/flash-sale-widget.dart';
-import 'package:flutter_uas_ecommers/widgets/heading-widget.dart';
 import 'package:get/get.dart';
 
 class MainScreen extends StatelessWidget {
@@ -20,69 +19,137 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.light,
-            statusBarColor: Appconstant.appMainColor),
+          statusBarBrightness: Brightness.light,
+          statusBarColor: Appconstant.appMainColor,
+        ),
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Text(
           "R&R",
-          style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
         ),
         centerTitle: true,
+        elevation: 2,
         actions: [
           GestureDetector(
             onTap: () => Get.to(() => CartScreen()),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.shopping_bag_outlined),
+              child: Icon(
+                Icons.shopping_bag_outlined,
+                color: Colors.black,
+              ),
             ),
-          )
+          ),
         ],
       ),
       drawer: DrawerWidget(),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(
+          color: Colors.grey[100],
           child: Column(
             children: [
-              SizedBox(
-                height: Get.height / 90.0,
+              SizedBox(height: Get.height / 90.0),
+              // Banner atas dengan margin
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                child: BannerWidget(),
               ),
-              //banner awal atas
-              BannerWidget(),
 
-              HeadingWidget(
-                headingTittle: "Categoris",
-                headingSubTittle: "According to your budget",
+              // Heading: Categories
+              SectionHeading(
+                title: "Categories",
+                subtitle: "Explore products by category",
                 onTap: () => Get.to(() => AllCategoriesScreen()),
-                buttonText: "See More",
               ),
-
               CategoriesWidget(),
 
-              HeadingWidget(
-                headingTittle: "Flash Sale",
-                headingSubTittle: "According to your budget",
+              // Heading: Flash Sale
+              SectionHeading(
+                title: "Flash Sale",
+                subtitle: "Get the best deals now",
                 onTap: () => Get.to(() => AllFlashSaleScreen()),
-                buttonText: "See More",
               ),
-
               FlashSaleWidget(),
 
-              HeadingWidget(
-                headingTittle: "All Products",
-                headingSubTittle: "According to your budget",
+              // Heading: All Products
+              SectionHeading(
+                title: "All Products",
+                subtitle: "Find the perfect match for your needs",
                 onTap: () => Get.to(() => AllProductsScreen()),
-                buttonText: "See More",
               ),
-
               AllProductsWidget(),
+
+              SizedBox(height: 16.0),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+
+class SectionHeading extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const SectionHeading({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
+          GestureDetector(
+            onTap: onTap,
+            child: Text(
+              "See More",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.pink,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

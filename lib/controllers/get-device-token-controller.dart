@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, unnecessary_overrides
+// ignore_for_file: file_names, unnecessary_overrides, unused_local_variable, avoid_print, prefer_const_constructors
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +27,8 @@ class GetDeviceTokenController extends GetxController {
         "Error",
         "$e",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        colorText: Color.fromARGB(255, 255, 0, 0),
       );
     }
   }
