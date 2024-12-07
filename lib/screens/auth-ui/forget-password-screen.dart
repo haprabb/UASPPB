@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unused_local_variable, file_names
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -17,100 +17,186 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final ForgetPasswordController forgetPasswordController =
       Get.put(ForgetPasswordController());
   TextEditingController userEmail = TextEditingController();
-  TextEditingController userPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-      return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          title: Text(
-            'Forget Password',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+    return KeyboardVisibilityBuilder(
+      builder: (context, isKeyboardVisible) {
+        return Scaffold(
+          backgroundColor: Colors.grey[100],
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            elevation: 0,
+            title: Text(
+              'Reset Password',
+              style: TextStyle(
+                color: Color(0xFF516B8C),
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Color(0xFF516B8C)),
+              onPressed: () => Get.back(),
             ),
           ),
-        ),
-        body: Container(
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              isKeyboardVisible
-                  ? Text('Welcome')
-                  : Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/logoRnr.png',
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 20),
+                    if (!isKeyboardVisible) ...[
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF516B8C).withOpacity(0.1),
+                        ),
+                        child: Image.asset(
+                          'assets/images/logo.png',
                           width: Get.width / 3,
-                          height: Get.height / 3,
-                        )
-                      ],
-                    ),
-              SizedBox(
-                height: Get.height / 15,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 5.0),
-                width: Get.width,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    controller: userEmail,
-                    cursorColor: Colors.black,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      hintText: "Email",
-                      prefixIcon: Icon(Icons.email),
-                      contentPadding: EdgeInsets.only(top: 2.0, left: 8.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                          height: Get.width / 3,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      Text(
+                        "Forgot Your Password?",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF516B8C),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Don't worry! It happens. Please enter the email address associated with your account.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: 40),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 15,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: TextFormField(
+                        controller: userEmail,
+                        cursorColor: Color(0xFF516B8C),
+                        keyboardType: TextInputType.emailAddress,
+                        style: TextStyle(fontSize: 16),
+                        decoration: InputDecoration(
+                          hintText: "Enter your email",
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                            color: Color(0xFF516B8C),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: EdgeInsets.all(20),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: Get.height / 12,
-              ),
-              Material(
-                child: Container(
-                  width: Get.width / 2,
-                  height: Get.height / 18,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 16, 34, 227),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      "Forget",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                    SizedBox(height: 30),
+                    Container(
+                      width: double.infinity,
+                      height: 55,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF516B8C), Color(0xFFC5DDF5)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFF516B8C).withOpacity(0.3),
+                            blurRadius: 15,
+                            offset: Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          String email = userEmail.text.trim();
+                          if (email.isEmpty) {
+                            Get.snackbar(
+                              "Error",
+                              "Please enter your email address",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red[400],
+                              colorText: Colors.white,
+                              borderRadius: 10,
+                              margin: EdgeInsets.all(10),
+                            );
+                          } else {
+                            forgetPasswordController.ForgetPasswordMethod(
+                                email);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.mail_outline, color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
+                              "Send Reset Link",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    onPressed: () async {
-                      String email = userEmail.text.trim();
-
-                      if (email.isEmpty) {
-                        Get.snackbar(
-                          "Error",
-                          "Wrong Email",
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                        );
-                        
-                      } else {
-                        String email = userEmail.text.trim();
-                        forgetPasswordController.ForgetPasswordMethod(email);
-                      }
-                    },
-                  ),
+                    SizedBox(height: 30),
+                    TextButton(
+                      onPressed: () => Get.back(),
+                      child: Text(
+                        "Back to Login",
+                        style: TextStyle(
+                          color: Color(0xFF516B8C),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

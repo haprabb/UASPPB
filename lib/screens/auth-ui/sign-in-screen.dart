@@ -94,9 +94,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 decoration: InputDecoration(
                                   labelText: "Email",
                                   labelStyle: TextStyle(
-                                      color: Colors.white), // Warna teks putih
-                                  prefixIcon:
-                                      Icon(Icons.email, color: Colors.white),
+                                      color: Color(
+                                          0xFF516b8c)), // Warna teks putih
+                                  prefixIcon: Icon(Icons.email,
+                                      color: Color(0xFF516b8c)),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(15.0),
                                   ),
@@ -113,10 +114,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   decoration: InputDecoration(
                                     labelText: "Password",
                                     labelStyle: TextStyle(
-                                        color:
-                                            Colors.white), // Warna teks putih
-                                    prefixIcon:
-                                        Icon(Icons.lock, color: Colors.white),
+                                        color: Color(
+                                            0xFF516b8c)), // Warna teks putih
+                                    prefixIcon: Icon(Icons.lock,
+                                        color: Color(0xFF516b8c)),
                                     suffixIcon: GestureDetector(
                                       onTap: () {
                                         signInController.isPasswordVisible
@@ -126,7 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                         signInController.isPasswordVisible.value
                                             ? Icons.visibility_off
                                             : Icons.visibility,
-                                        color: Colors.white,
+                                        color: Color(0xFF516b8c),
                                       ),
                                     ),
                                     border: OutlineInputBorder(
@@ -145,7 +146,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                   child: Text(
                                     "Forgot Password?",
                                     style: TextStyle(
-                                        color: Colors.white, // Warna teks putih
+                                        color: Color(
+                                            0xFF516b8c), // Warna teks putih
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -196,7 +198,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                             Get.offAll(() => MainScreen());
                                             Get.snackbar(
                                               "Success Login",
-                                              "",
+                                              "Happy Shopping",
                                               snackPosition:
                                                   SnackPosition.BOTTOM,
                                               backgroundColor: Colors.green,
@@ -262,12 +264,30 @@ class _SignInScreenState extends State<SignInScreen> {
                           children: [
                             Text(
                               "Don't have an Account? ",
-                              style: TextStyle(color: Color(0xFFC5DDF5)),
+                              style: TextStyle(color: Color(0xFF516b8c)),
                             ),
                             GestureDetector(
                               onTap: () => Get.offAll(() => SignUpScreen()),
                               child: Text(
                                 "Sign Up",
+                                style: TextStyle(
+                                    color: Color(0xFF516b8c),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Login As Guess? ",
+                              style: TextStyle(color: Color(0xFF516b8c)),
+                            ),
+                            GestureDetector(
+                              onTap: () => Get.offAll(() => MainScreen()),
+                              child: Text(
+                                "Guess",
                                 style: TextStyle(
                                     color: Color(0xFF516b8c),
                                     fontWeight: FontWeight.bold),

@@ -27,9 +27,10 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xFFC5DDF5),
+        centerTitle: true,
         title: Text(
-          "Product Detail",
+          "PRODUCT DETAIL",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
@@ -80,6 +81,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
               padding: EdgeInsets.all(8.0),
               child: Card(
                 elevation: 5.0,
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -94,6 +96,8 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                           children: [
                             Text(
                               widget.productModel.productName,
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                             Icon(Icons.favorite_outline),
                           ],
@@ -103,7 +107,6 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        color: const Color.fromARGB(255, 225, 132, 163),
                         alignment: Alignment.topLeft,
                         child: Row(
                           children: [
@@ -111,6 +114,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                                     widget.productModel.salePrice != ''
                                 ? Text(
                                     "\$" + widget.productModel.salePrice,
+                                    style: TextStyle(fontSize: 20),
                                   )
                                 : Text(
                                     "\$" + widget.productModel.fullPrice,
@@ -123,12 +127,14 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: Colors.pink,
                             borderRadius: BorderRadius.circular(6.0)),
                         alignment: Alignment.topLeft,
-                        height: Get.height / 5,
+                        height: Get.height / 2.5,
                         child: Text(
                           widget.productModel.productDescription,
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
@@ -140,18 +146,18 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                           Material(
                             child: Container(
                               width: Get.width / 1.5,
-                              height: Get.height / 12,
+                              height: Get.height / 16,
                               decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 16, 34, 227),
+                                color: Color(0xFF516B8C),
                                 borderRadius: BorderRadius.circular(20.0),
                               ),
                               child: TextButton(
                                 child: Text(
                                   "Add to cart",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () async {
                                   await checkProductExistence(uId: user!.uid);
@@ -160,7 +166,7 @@ class _ProductDetialScreenState extends State<ProductDetialScreen> {
                             ),
                           ),
                           SizedBox(
-                            width: 5.0,
+                            width: 2.0,
                           ),
                         ],
                       ),

@@ -96,7 +96,6 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-
 class SectionHeading extends StatelessWidget {
   final String title;
   final String subtitle;
@@ -145,7 +144,7 @@ class SectionHeading extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: Colors.pink,
+                color: Color(0xFF516B8C),
               ),
             ),
           ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: file_names, prefer_const_constructors, unused_local_variable
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/models/product-model.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/product-detail-screen.dart';
 import 'package:get/get.dart';
+
 
 class AllFlashSaleScreen extends StatefulWidget {
   const AllFlashSaleScreen({super.key});
@@ -20,11 +21,13 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xFFC5DDF5),
+        centerTitle: true,
         title: Text(
-          "All Flash Sale Products!",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          "All FLASH SALE PRODUCTS!",
+          style: TextStyle(color: Colors.black),
         ),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
@@ -53,12 +56,12 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
             itemCount: snapshot.data!.docs.length,
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(10),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 0.7,
+              mainAxisSpacing: 10.0, // Jarak antar grid secara vertikal
+              crossAxisSpacing: 10.0, // Jarak antar grid secara horizontal
+              childAspectRatio: 0.75, // Menyesuaikan proporsi grid
             ),
             itemBuilder: (context, index) {
               final productData = snapshot.data!.docs[index];
@@ -82,88 +85,101 @@ class _AllFlashSaleScreenState extends State<AllFlashSaleScreen> {
                 onTap: () => Get.to(() => ProductDetialScreen(
                       productModel: productModel,
                     )),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        blurRadius: 5,
+                        spreadRadius: 1,
+                      ),
+                    ],
                   ),
-                  elevation: 5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Stack(
                     children: [
-                      Stack(
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          ClipRRect(
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(15)),
-                            child: CachedNetworkImage(
-                              imageUrl: productModel.productImages[0],
-                              height: Get.height / 5,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) =>
-                                  CupertinoActivityIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                          // Gambar produk di tengah
+                          Container(
+                            height: 130.0,
+                            width: 130.0,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                  productModel.productImages[0],
+                                ),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                          if (productModel.isSale)
-                            Positioned(
-                              top: 8,
-                              right: 8,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.redAccent,
-                                  borderRadius: BorderRadius.circular(12),
+                          SizedBox(height: 10.0),
+                          // Nama produk di tengah
+                          Text(
+                            productModel.productName,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 5.0),
+                          // Harga promo dan normal di tengah
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Harga promo
+                              Text(
+                                '\$${productModel.salePrice}',
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                child: Text(
-                                  "Sale",
+                              ),
+                              SizedBox(width: 5.0),
+                              // Harga normal (dicoret jika diskon)
+                              if (productModel.isSale)
+                                Text(
+                                  '\$${productModel.fullPrice}',
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                    color: Colors.grey,
+                                    fontSize: 14.0,
+                                    decoration: TextDecoration.lineThrough,
                                   ),
                                 ),
-                              ),
-                            ),
+                            ],
+                          ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              productModel.productName,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
+                      // Label "Sale" di pojok kanan atas
+                      if (productModel.isSale)
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 4.0),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              'Sale',
                               style: TextStyle(
-                                fontSize: 16,
+                                color: Colors.white,
+                                fontSize: 12.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 4),
-                            Text(
-                              "\$${productModel.salePrice}",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "\$${productModel.fullPrice}",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

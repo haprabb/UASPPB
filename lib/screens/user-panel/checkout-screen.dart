@@ -1,5 +1,6 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, file_names, sized_box_for_whitespace, avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,9 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:flutter_uas_ecommers/controllers/get-customer-device-token-controller.dart';
 import 'package:flutter_uas_ecommers/models/cart-model.dart';
+import 'package:flutter_uas_ecommers/services/place-order-service.dart';
 import 'package:get/get.dart';
+import 'package:image_card/image_card.dart';
+
 import '../../controllers/cart-price-controller.dart';
-import '../../services/place-order-service.dart';
 
 class CheckOutScreen extends StatefulWidget {
   const CheckOutScreen({super.key});
@@ -30,8 +33,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: Text("Checkout"),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: Text("CHECKOUT"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -81,8 +85,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     createAt: productData['createAt'],
                     updateAt: productData['updateAt'],
                     productQuantity: productData['productQuantity'],
-                    productTotalPrice: double.parse(
-                        productData['productTotalPrice'].toString()),
+                    productTotalPrice: productData['productTotalPrice'],
                   );
 
                   producPriceController.fetchProductPrice();
@@ -105,41 +108,78 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         },
                       )
                     ],
+                    // Modifikasi bagian card item dalam ListView.builder
                     child: Card(
                       elevation: 5,
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.pink,
-                          backgroundImage:
-                              NetworkImage(cartModel.productImages[0]),
-                        ),
-                        title: Text(cartModel.productName),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      color: Color(0xFFC5DDF5),
+                      margin: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(12),
+                        child: Row(
                           children: [
-                            Text(cartModel.productTotalPrice.toString()),
-                            GestureDetector(
-                              onTap: () async {
-                                if (cartModel.productQuantity > 1) {
-                                  FirebaseFirestore.instance
-                                      .collection('cart')
-                                      .doc(user!.uid)
-                                      .collection('cartOrder')
-                                      .doc(cartModel.productId)
-                                      .update({
-                                    'productQuantity':
-                                        cartModel.productQuantity - 1,
-                                    'productTotalPrice':
-                                        (double.parse(cartModel.fullPrice) *
-                                            (cartModel.productQuantity - 1))
-                                  });
-                                }
-                              },
-                              child: CircleAvatar(
-                                radius: 12.0,
-                                backgroundColor: Colors.pink,
-                                child: Text('-'),
+                            // Gambar Produk
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image:
+                                      NetworkImage(cartModel.productImages[0]),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 15),
+
+                            // Informasi Produk
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cartModel.productName,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF516B8C),
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Price: \$${cartModel.fullPrice}',
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Qty: ${cartModel.productQuantity}',
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    'Total: \$${cartModel.productTotalPrice.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF516B8C),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
@@ -173,14 +213,14 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   width: Get.width / 2.0,
                   height: Get.height / 18,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 16, 34, 227),
+                    color: const Color(0xFF516B8C),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: TextButton(
                     child: Text(
                       "Comfirm Order",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
                       showCustomBottomSheet();
@@ -202,99 +242,291 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16.0),
+            top: Radius.circular(25.0),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 10,
+              offset: Offset(0, -5),
+            ),
+          ],
         ),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 20.0),
-                child: Container(
-                  height: 55.0,
-                  child: TextFormField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
+              // Handle Bar
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 20.0),
-                child: Container(
-                  height: 55.0,
-                  child: TextFormField(
-                    controller: addressController,
-                    decoration: InputDecoration(
-                      labelText: 'Address',
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 20.0),
-                child: Container(
-                  height: 55.0,
-                  child: TextFormField(
-                    controller: phoneController,
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      labelText: 'Phone',
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                      ),
-                      hintStyle: TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.pink,
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  ),
-                  onPressed: () async {
-                    // if (nameController.text != '' &&
-                    //     phoneController.text != '' &&
-                    //     addressController.text != '') {
+              SizedBox(height: 20),
 
-                    // }
-                    String name = nameController.text.trim();
-                    String phone = phoneController.text.trim();
-                    String address = addressController.text.trim();
-                    String customerToken = await getCustomerDeviceToken();
+              // Title
+              Text(
+                "Shipping Details",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF516B8C),
+                ),
+              ),
+              SizedBox(height: 30),
 
-                    placeOrder(
-                      context: context,
-                      customerName: name,
-                      customerPhone: phone,
-                      customerAddress: address,
-                      customerDeviceToken: customerToken,
-                    );
-                  },
-                  child: Text(
-                    "Place Order",
-                    style: TextStyle(color: Colors.white),
-                  ))
+              // Form Fields
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  children: [
+                    // Name Field
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.grey[300]!),
+                      ),
+                      child: TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          labelText: "Full Name",
+                          hintText: "Enter your full name",
+                          prefixIcon: Icon(Icons.person_outline,
+                              color: Color(0xFF516B8C)),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                          labelStyle: TextStyle(color: Color(0xFF516B8C)),
+                          hintStyle:
+                              TextStyle(color: Colors.grey[400], fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    // Address Field
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.grey[300]!),
+                      ),
+                      child: TextFormField(
+                        controller: addressController,
+                        maxLines: 2,
+                        decoration: InputDecoration(
+                          labelText: "Delivery Address",
+                          hintText: "Enter your delivery address",
+                          prefixIcon: Icon(Icons.location_on_outlined,
+                              color: Color(0xFF516B8C)),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                          labelStyle: TextStyle(color: Color(0xFF516B8C)),
+                          hintStyle:
+                              TextStyle(color: Colors.grey[400], fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    // Phone Field
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(color: Colors.grey[300]!),
+                      ),
+                      child: TextFormField(
+                        controller: phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          labelText: "Phone Number",
+                          hintText: "Enter your phone number",
+                          prefixIcon: Icon(Icons.phone_outlined,
+                              color: Color(0xFF516B8C)),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 15),
+                          labelStyle: TextStyle(color: Color(0xFF516B8C)),
+                          hintStyle:
+                              TextStyle(color: Colors.grey[400], fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+
+                    // Order Summary dengan StreamBuilder
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('cart')
+                          .doc(user!.uid)
+                          .collection('cartOrder')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        int totalQuantity = 0;
+
+                        if (snapshot.hasData) {
+                          // Menghitung total quantity dari semua item
+                          for (var doc in snapshot.data!.docs) {
+                            totalQuantity +=
+                                (doc['productQuantity'] as num).toInt();
+                          }
+                        }
+
+                        return Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.grey[300]!),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Total Items:",
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Color(0xFF516B8C).withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      "$totalQuantity items",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        color: Color(0xFF516B8C),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Divider(height: 20),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Total Amount:",
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Obx(
+                                    () => Text(
+                                      "\$${producPriceController.totalPrice.value.toStringAsFixed(2)}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Color(0xFF516B8C),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 30),
+
+                    // Place Order Button
+                    Container(
+                      width: double.infinity,
+                      height: 55,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Color(0xFF516B8C), Color(0xFF7B8FB2)],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFF516B8C).withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (nameController.text.isNotEmpty &&
+                              phoneController.text.isNotEmpty &&
+                              addressController.text.isNotEmpty) {
+                            String name = nameController.text.trim();
+                            String phone = phoneController.text.trim();
+                            String address = addressController.text.trim();
+                            String customerToken =
+                                await getCustomerDeviceToken();
+
+                            placeOrder(
+                              context: context,
+                              customerName: name,
+                              customerPhone: phone,
+                              customerAddress: address,
+                              customerDeviceToken: customerToken,
+                            );
+                          } else {
+                            Get.snackbar(
+                              "Incomplete Details",
+                              "Please fill in all the required information",
+                              backgroundColor: Colors.red[400],
+                              colorText: Colors.white,
+                              borderRadius: 10,
+                              margin: EdgeInsets.all(10),
+                              snackPosition: SnackPosition.TOP,
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.shopping_cart_checkout,
+                                color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
+                              "Place Order",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -302,7 +534,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       backgroundColor: Colors.transparent,
       isDismissible: true,
       enableDrag: true,
-      elevation: 6,
+      elevation: 0,
     );
   }
 }

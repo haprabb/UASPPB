@@ -150,7 +150,7 @@ class AllProductsWidget extends StatelessWidget {
                               '\$${productModel.fullPrice}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.pink,
+                                color: const Color.fromARGB(255, 0, 0, 0),
                                 fontSize: 16,
                               ),
                             ),
@@ -160,7 +160,7 @@ class AllProductsWidget extends StatelessWidget {
                                 (i) => Icon(
                                   Icons.star,
                                   size: 16,
-                                  color: i < 4
+                                  color: i < 3.5
                                       ? Colors.amber
                                       : Colors.grey.shade400,
                                 ),

@@ -5,11 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/all-order-screen.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/all-products-screen.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/info-screen.dart';
 import 'package:get/get.dart';
-import '../screens/auth-ui/contact-screen.dart';
-import '../screens/auth-ui/info-screen.dart';
 import '../screens/auth-ui/sign-in-screen.dart';
-import '../screens/user-panel/main-screen.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -32,20 +30,16 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         child: Column(
           children: [
-            // Header with User Info
-            // ... existing code ...
-
-// Ubah bagian Row dalam Container header
-            // ... existing code ...
-
             Container(
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.pink, Colors.pinkAccent],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                color: Color(0xFF516B8C),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Color(0xFF516B8C),
+                      blurRadius: 15.0,
+                      offset: Offset(0.0, 0.75))
+                ],
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20.0),
                   bottomRight: Radius.circular(20.0),
@@ -59,7 +53,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     child: Icon(
                       Icons.person,
                       size: 40,
-                      color: Colors.pink,
+                      color: Color(0xFF516B8C),
                     ),
                   ),
                   SizedBox(width: 15),
@@ -118,22 +112,17 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 ],
               ),
             ),
-
-// ... existing code ...
-
             Expanded(
               child: ListView(
                 children: [
-                  _buildDrawerItem(
-                    title: "Info",
-                    icon: Icons.info,
-                    onTap: () async {
-                      FirebaseAuth _auth = FirebaseAuth.instance;
-                      await _auth.signOut();
-                      Get.offAll(() => InfoScreen());
-                    },
-                  ),
                   if (FirebaseAuth.instance.currentUser != null) ...[
+                    _buildDrawerItem(
+                      title: "Info",
+                      icon: Icons.info,
+                      onTap: () async {
+                        Get.to(() => InfoScreen());
+                      },
+                    ),
                     _buildDrawerItem(
                         title: "Products",
                         icon: Icons.production_quantity_limits_rounded,
@@ -145,13 +134,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                       icon: Icons.shopping_bag_rounded,
                       onTap: () {
                         Get.to(() => AllOrderScreen());
-                      },
-                    ),
-                    _buildDrawerItem(
-                      title: "Contact",
-                      icon: Icons.help,
-                      onTap: () {
-                        Get.to(() => ContactScreen());
                       },
                     ),
                     _buildDrawerItem(
@@ -197,7 +179,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         leading: Icon(
           icon,
-          color: const Color.fromARGB(255, 47, 0, 255),
+          color: Color(0xFF516B8C),
         ),
         trailing: Icon(
           Icons.arrow_forward,
