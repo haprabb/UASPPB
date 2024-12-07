@@ -1,10 +1,15 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_uas_ecommers/screens/user-panel/all-order-screen.dart';
+import 'package:flutter_uas_ecommers/screens/user-panel/all-products-screen.dart';
 import 'package:get/get.dart';
+import '../screens/auth-ui/contact-screen.dart';
+import '../screens/auth-ui/info-screen.dart';
 import '../screens/auth-ui/sign-in-screen.dart';
+import '../screens/user-panel/main-screen.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({super.key});
@@ -27,94 +32,146 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         child: Column(
           children: [
-            // Header with Gradient Background
+            // Header with User Info
+            // ... existing code ...
+
+// Ubah bagian Row dalam Container header
+            // ... existing code ...
+
             Container(
-              width: double.infinity,
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.pink, Colors.orange],
+                  colors: [Colors.pink, Colors.pinkAccent],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
+                  topRight: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
                 ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
               child: Row(
                 children: [
                   CircleAvatar(
-                    radius: 30.0,
+                    radius: 30,
                     backgroundColor: Colors.white,
-                    child: Text(
-                      "H",
-                      style: TextStyle(
-                        color: Colors.pink,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
+                    child: Icon(
+                      Icons.person,
+                      size: 40,
+                      color: Colors.pink,
                     ),
                   ),
                   SizedBox(width: 15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Haprab",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                      Text(
-                        "satya H",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
+                  StreamBuilder<User?>(
+                    stream: FirebaseAuth.instance.authStateChanges(),
+                    builder: (context, authSnapshot) {
+                      if (authSnapshot.hasData && authSnapshot.data != null) {
+                        // User sudah login
+                        return StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(authSnapshot.data!.uid)
+                              .snapshots(),
+                          builder: (context,
+                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              var userData =
+                                  snapshot.data!.data() as Map<String, dynamic>;
+                              return Text(
+                                'Welcome, ${userData['username'] ?? 'User'}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }
+                            return Text(
+                              'Welcome!',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        // User belum login
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(() => SignInScreen());
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
             ),
-            Divider(
-              indent: 10.0,
-              endIndent: 10.0,
-              thickness: 1.5,
-              color: Colors.grey[300],
-            ),
+
+// ... existing code ...
+
             Expanded(
               child: ListView(
                 children: [
                   _buildDrawerItem(
-                    title: "Home",
-                    icon: Icons.home_filled,
+                    title: "Info",
+                    icon: Icons.info,
+                    onTap: () async {
+                      FirebaseAuth _auth = FirebaseAuth.instance;
+                      await _auth.signOut();
+                      Get.offAll(() => InfoScreen());
+                    },
                   ),
-                  _buildDrawerItem(
-                    title: "Products",
-                    icon: Icons.production_quantity_limits_rounded,
-                  ),
-                  _buildDrawerItem(
+                  if (FirebaseAuth.instance.currentUser != null) ...[
+                    _buildDrawerItem(
+                        title: "Products",
+                        icon: Icons.production_quantity_limits_rounded,
+                        onTap: () async {
+                          Get.to(() => AllProductsScreen());
+                        }),
+                    _buildDrawerItem(
                       title: "Order",
                       icon: Icons.shopping_bag_rounded,
                       onTap: () {
                         Get.to(() => AllOrderScreen());
-                      }),
-                  _buildDrawerItem(
-                    title: "Contact",
-                    icon: Icons.help,
-                  ),
-                  _buildDrawerItem(
-                    title: "Logout",
-                    icon: Icons.logout_rounded,
-                    onTap: () async {
-                      FirebaseAuth _auth = FirebaseAuth.instance;
-                      await _auth.signOut();
-                      Get.offAll(() => SignInScreen());
-                    },
-                  ),
+                      },
+                    ),
+                    _buildDrawerItem(
+                      title: "Contact",
+                      icon: Icons.help,
+                      onTap: () {
+                        Get.to(() => ContactScreen());
+                      },
+                    ),
+                    _buildDrawerItem(
+                      title: "Logout",
+                      icon: Icons.logout_rounded,
+                      onTap: () async {
+                        FirebaseAuth _auth = FirebaseAuth.instance;
+                        await _auth.signOut();
+                        Get.offAll(() => SignInScreen());
+                      },
+                    ),
+                  ] else ...[
+                    _buildDrawerItem(
+                      title: "Login",
+                      icon: Icons.login,
+                      onTap: () {
+                        Get.to(() => SignInScreen());
+                      },
+                    ),
+                  ]
                 ],
               ),
             ),
@@ -125,8 +182,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     );
   }
 
-  Widget _buildDrawerItem(
-      {required String title, required IconData icon, Function()? onTap}) {
+  Widget _buildDrawerItem({
+    required String title,
+    required IconData icon,
+    Function()? onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: ListTile(
@@ -137,7 +197,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         leading: Icon(
           icon,
-          color: Colors.pink,
+          color: const Color.fromARGB(255, 47, 0, 255),
         ),
         trailing: Icon(
           Icons.arrow_forward,
@@ -148,6 +208,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
         ),
         tileColor: Colors.grey[100],
         hoverColor: Colors.pink[50],
+        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       ),
     );
   }

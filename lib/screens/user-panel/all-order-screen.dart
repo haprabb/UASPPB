@@ -1,126 +1,163 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings
+// ignore_for_file: unnecessary_import, use_super_parameters, prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_uas_ecommers/models/order-model.dart';
-import 'package:get/get.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
-import '../../controllers/cart-price-controller.dart';
+class AllOrderScreen extends StatelessWidget {
+  const AllOrderScreen({Key? key}) : super(key: key);
 
-class AllOrderScreen extends StatefulWidget {
-  const AllOrderScreen({super.key});
-
-  @override
-  State<AllOrderScreen> createState() => _AllOrderScreenState();
-}
-
-class _AllOrderScreenState extends State<AllOrderScreen> {
-  User? user = FirebaseAuth.instance.currentUser;
-  final ProducPriceController producPriceController =
-      Get.put(ProducPriceController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Riwayat Pesanan'),
         backgroundColor: Colors.pink,
-        title: Text("Cart"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('orders')
-            .doc(user!.uid)
-            .collection('confirmOrder')
+            .where('uId', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+            .orderBy('createAt', descending: true)
             .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("Error"),
-            );
-          }
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              height: Get.height / 5,
-              child: Center(
-                child: CupertinoActivityIndicator(),
-              ),
-            );
+            return Center(child: CircularProgressIndicator());
           }
-          if (snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Text("No Product found"),
-            );
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Terjadi kesalahan'));
           }
-          if (snapshot.data != null) {
-            return Container(
-              child: ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                shrinkWrap: true,
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final productData = snapshot.data!.docs[index];
 
-                  OrderModel orderModel = OrderModel(
-                    productId: productData['productId'],
-                    categoryId: productData['categoryId'],
-                    categoryName: productData['categoryName'],
-                    productName: productData['productName'],
-                    salePrice: productData['salePrice'],
-                    fullPrice: productData['fullPrice'],
-                    productImages: productData['productImages'],
-                    deliveryTime: productData['deliveryTime'],
-                    isSale: productData['isSale'],
-                    productDescription: productData['productDescription'],
-                    createAt: productData['createAt'],
-                    updateAt: productData['updateAt'],
-                    productQuantity: productData['productQuantity'],
-                    productTotalPrice: productData['productTotalPrice'],
-                    customerId: productData['customerId'],
-                    status: productData['status'],
-                    customerName: productData['customerName'],
-                    customerAddress: productData['customerAddress'],
-                    customerPhone: productData['customerPhone'],
-                    customerDeviceToken: productData['customerDeviceToken'],
-                  );
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('Belum ada pesanan'));
+          }
 
-                  producPriceController.fetchProductPrice();
-                  return Card(
-                    elevation: 5,
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.pink,
-                        backgroundImage:
-                            NetworkImage(orderModel.productImages[0]),
-                      ),
-                      title: Text(orderModel.productName),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+          return ListView.builder(
+            padding: EdgeInsets.all(10),
+            itemCount: snapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              var orderData =
+                  snapshot.data!.docs[index].data() as Map<String, dynamic>;
+              var items =
+                  List<Map<String, dynamic>>.from(orderData['items'] ?? []);
+              var createAt = (orderData['createAt'] as Timestamp).toDate();
+              var formattedDate =
+                  DateFormat('dd MMM yyyy, HH:mm').format(createAt);
+
+              return Card(
+                elevation: 3,
+                margin: EdgeInsets.only(bottom: 15),
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("\$" + orderModel.productTotalPrice.toString()),
-                          SizedBox(
-                            width: 10.0,
+                          Text(
+                            'Order #${orderData['orderId']}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
-                          orderModel.status != true
-                              ? Text(
-                                  "Pending..",
-                                  style: TextStyle(color: Colors.green),
-                                )
-                              : Text(
-                                  "Delivered",
-                                  style: TextStyle(color: Colors.red),
-                                )
+                          Text(
+                            formattedDate,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14,
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  );
-                },
-              ),
-            );
-          }
-
-          return Container();
+                      Divider(),
+                      // Informasi Pelanggan
+                      Text(
+                        'Nama: ${orderData['customerName']}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(
+                        'Telepon: ${orderData['customerPhone']}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Text(
+                        'Alamat: ${orderData['customerAddress']}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Divider(),
+                      // Daftar Produk
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: items.length,
+                        itemBuilder: (context, itemIndex) {
+                          var item = items[itemIndex];
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    '${item['productName']} x${item['productQuantity']}',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                                Text(
+                                  'Rp ${NumberFormat('#,###').format(item['productTotalPrice'])}',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                      Divider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          Text(
+                            'Rp ${NumberFormat('#,###').format(orderData['totalAmount'])}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.pink,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: orderData['orderStatus']
+                              ? Colors.green
+                              : Colors.orange,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          orderData['orderStatus'] ? 'Selesai' : 'Diproses',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         },
       ),
     );
