@@ -12,9 +12,29 @@ class AllOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orders History'),
-        backgroundColor: Color(0xFF516B8C),
+        iconTheme: IconThemeData(color: Color(0xFF516B8C)),
+        backgroundColor: Color(0xFFC5DDF5),
+        elevation: 0,
         centerTitle: true,
+        title: Container(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          decoration: BoxDecoration(
+            color: Color(0xFF516B8C).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Color(0xFF516B8C).withOpacity(0.2),
+            ),
+          ),
+          child: Text(
+            "ORDER HISTORY",
+            style: TextStyle(
+              color: Color(0xFF516B8C),
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              letterSpacing: 1,
+            ),
+          ),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance

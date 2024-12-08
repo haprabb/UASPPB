@@ -33,9 +33,29 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Color(0xFF516B8C)),
+        backgroundColor: Color(0xFFC5DDF5),
+        elevation: 0,
         centerTitle: true,
-        title: Text("CHECKOUT"),
+        title: Container(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          decoration: BoxDecoration(
+            color: Color(0xFF516B8C).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Color(0xFF516B8C).withOpacity(0.2),
+            ),
+          ),
+          child: Text(
+            "CHECKOUT",
+            style: TextStyle(
+              color: Color(0xFF516B8C),
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              letterSpacing: 1,
+            ),
+          ),
+        ),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -196,40 +216,113 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         },
       ),
       bottomNavigationBar: Container(
-        margin: EdgeInsets.only(bottom: 5.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Obx(
-              () => Text(
-                "Total: \$ ${producPriceController.totalPrice.value.toStringAsFixed(1)}",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 10,
+              offset: Offset(0, -5),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Material(
-                child: Container(
-                  width: Get.width / 2.0,
-                  height: Get.height / 18,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF516B8C),
-                    borderRadius: BorderRadius.circular(20.0),
+          ],
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Total Price Container
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Color(0xFF516B8C).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Color(0xFF516B8C).withOpacity(0.2),
                   ),
-                  child: TextButton(
-                    child: Text(
-                      "Comfirm Order",
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Total Price",
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Color(0xFF516B8C).withOpacity(0.8),
+                        fontSize: 12,
+                      ),
                     ),
-                    onPressed: () {
+                    SizedBox(height: 4),
+                    Obx(
+                      () => Text(
+                        "\$${producPriceController.totalPrice.value.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Color(0xFF516B8C),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Confirm Order Button
+              Container(
+                width: Get.width / 2.0,
+                height: 50,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF516B8C), Color(0xFF7B8FB2)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF516B8C).withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(25),
+                    onTap: () {
+                      // Panggil showCustomBottomSheet saat tombol ditekan
                       showCustomBottomSheet();
                     },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.approval,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "Confirm Order",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

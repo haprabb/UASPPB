@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,11 +21,13 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Color(0xFFC5DDF5),
+        centerTitle: true,
         title: Text(
-          "All Categories",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          "All CATEGORIES!",
+          style: TextStyle(color: Colors.black),
         ),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance.collection('categories').get(),

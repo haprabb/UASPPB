@@ -28,19 +28,28 @@ class _CartScreenState extends State<CartScreen> {
     if (user == null) {
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
+          iconTheme: IconThemeData(color: Color(0xFF516B8C)),
+          backgroundColor: Color(0xFFC5DDF5),
           elevation: 0,
-          title: Text(
-            "Cart",
-            style: TextStyle(
-              color: Color(0xFF516B8C),
-              fontWeight: FontWeight.bold,
+          centerTitle: true,
+          title: Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            decoration: BoxDecoration(
+              color: Color(0xFF516B8C).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Color(0xFF516B8C).withOpacity(0.2),
+              ),
             ),
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Color(0xFF516B8C)),
-            onPressed: () => Get.back(),
+            child: Text(
+              "CART",
+              style: TextStyle(
+                color: Color(0xFF516B8C),
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                letterSpacing: 1,
+              ),
+            ),
           ),
         ),
         body: Container(
@@ -160,14 +169,27 @@ class _CartScreenState extends State<CartScreen> {
       // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import
 
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
+        iconTheme: IconThemeData(color: Color(0xFF516B8C)),
+        backgroundColor: Color(0xFFC5DDF5),
         elevation: 0,
-        title: Text(
-          "Cart",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+        centerTitle: true,
+        title: Container(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          decoration: BoxDecoration(
+            color: Color(0xFF516B8C).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Color(0xFF516B8C).withOpacity(0.2),
+            ),
+          ),
+          child: Text(
+            "CART",
+            style: TextStyle(
+              color: Color(0xFF516B8C),
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              letterSpacing: 1,
+            ),
           ),
         ),
       ),
@@ -403,44 +425,110 @@ class _CartScreenState extends State<CartScreen> {
         },
       ),
       bottomNavigationBar: Container(
-        color: Colors.white,
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Obx(
-              () => Text(
-                "Total: \$ ${producPriceController.totalPrice.value.toStringAsFixed(1)}",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF516B8C),
-                ),
-              ),
-            ),
-            Material(
-              color: Colors.transparent,
-              child: Container(
-                width: Get.width / 2.0,
-                height: Get.height / 18,
-                decoration: BoxDecoration(
-                  color: Color(0xFF516B8C),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: TextButton(
-                  child: Text(
-                    "Checkout",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () {
-                    Get.to(() => CheckOutScreen());
-                  },
-                ),
-              ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 10,
+              offset: Offset(0, -5),
             ),
           ],
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        child: SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Total Price Container
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Color(0xFF516B8C).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Color(0xFF516B8C).withOpacity(0.2),
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Total Price",
+                      style: TextStyle(
+                        color: Color(0xFF516B8C).withOpacity(0.8),
+                        fontSize: 12,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Obx(
+                      () => Text(
+                        "\$${producPriceController.totalPrice.value.toStringAsFixed(2)}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Color(0xFF516B8C),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Checkout Button
+              Container(
+                width: Get.width / 2.0,
+                height: 50,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xFF516B8C), Color(0xFF7B8FB2)],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0xFF516B8C).withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(25),
+                    onTap: () => Get.to(() => CheckOutScreen()),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.shopping_cart_checkout,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "Checkout",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
