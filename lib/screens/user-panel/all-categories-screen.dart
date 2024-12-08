@@ -21,13 +21,29 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Color(0xFF516B8C)),
         backgroundColor: Color(0xFFC5DDF5),
+        elevation: 0,
         centerTitle: true,
-        title: Text(
-          "All CATEGORIES!",
-          style: TextStyle(color: Colors.black),
+        title: Container(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          decoration: BoxDecoration(
+            color: Color(0xFF516B8C).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: Color(0xFF516B8C).withOpacity(0.2),
+            ),
+          ),
+          child: Text(
+            "ALL CATEGORIES",
+            style: TextStyle(
+              color: Color(0xFF516B8C),
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              letterSpacing: 1,
+            ),
+          ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance.collection('categories').get(),

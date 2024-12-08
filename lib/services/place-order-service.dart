@@ -65,10 +65,18 @@ void placeOrder(
       await batch.commit();
 
       Get.snackbar(
-        "Pesanan Berhasil",
-        "Pesanan Anda sedang diproses",
-        backgroundColor: Color.fromARGB(255, 255, 61, 200),
+        "Order Confirm",
+        "Your order has been process",
+        backgroundColor: Color(0xFF516B8C),
         colorText: Colors.white,
+        margin: EdgeInsets.all(15),
+        borderRadius: 10,
+        duration: Duration(seconds: 2),
+        icon: Icon(
+          Icons.check_circle,
+          color: Colors.white,
+        ),
+        snackPosition: SnackPosition.TOP,
       );
 
       Get.offAll(() => MainScreen());
@@ -76,9 +84,17 @@ void placeOrder(
       print("ERROR: $e");
       Get.snackbar(
         "Error",
-        "Gagal membuat pesanan: ${e.toString()}",
-        backgroundColor: Color.fromARGB(255, 255, 61, 200),
+        "Failed to make order",
+        backgroundColor: Colors.red[400],
         colorText: Colors.white,
+        margin: EdgeInsets.all(15),
+        borderRadius: 10,
+        duration: Duration(seconds: 2),
+        icon: Icon(
+          Icons.error,
+          color: Colors.white,
+        ),
+        snackPosition: SnackPosition.TOP,
       );
     }
   }
